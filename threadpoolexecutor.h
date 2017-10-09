@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <queue>
+#include <unistd.h>
 #include "runnable.h"
 using namespace std;
 
@@ -16,6 +17,7 @@ class ThreadExecutor{
 public:
     virtual void addWork(Runnable*)=0;
     virtual void destroy()=0;
+    virtual pthread_t getRaize()=0;
     int inwork;
     pthread_mutex_t mutexRaize;
     queue<Runnable*> inWait;
@@ -29,10 +31,12 @@ private:
     ThreadPoolExecutor(int max);
     static ThreadExecutor *instance;
 
+
 public:
 
     void addWork(Runnable*);
     void destroy();
+    pthread_t getRaize();
     static void *initRunnable( void *arg);
     static ThreadExecutor *getInstance();
     static ThreadExecutor *getInstance(int max);

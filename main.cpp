@@ -17,30 +17,26 @@ public:
 
 int main()
 {
-
-        int x=0;
         ThreadExecutor* executor=  ThreadPoolExecutor::getInstance(10);
-
+        pthread_t raize;
         try{
 
-            for (int j=0; j<=2000; j++){
-               for (int i=25; i<=40; i++){
-                    executor->addWork(new TestingRunnable(i));
-                    cout<<"Trabajos"<<j++;
-                }
+            raize= executor->getRaize();
 
-              }
-
-
-            while(1)
-            {
+            while(1){
+                for (int j=0; j<=1000000; j++){
+                    executor->addWork(new TestingRunnable(20));
+                     cout<<"Trabajos"<<j++;
+                  }
+                sleep(60);
 
             }
+
+            pthread_join(raize, NULL);
+
         }catch(ThreadInicializeException *ex){
             cout<<ex->what()<<endl;
         }
-
-
     return 0;
 }
 
